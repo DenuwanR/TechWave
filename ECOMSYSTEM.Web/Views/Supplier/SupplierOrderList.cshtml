@@ -1,0 +1,259 @@
+﻿@model IEnumerable<ECOMSYSTEM.Shared.Models.OrderDetails>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Dashboard </title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet" />
+    <link href="../../dist-assets/css/themes/lite-purple.min.css" rel="stylesheet" />
+    <link href="../../dist-assets/css/plugins/perfect-scrollbar.min.css" rel="stylesheet" />
+
+    <!-- Sweet alert -->
+    <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js'></script>
+    <link rel='stylesheet' type='text/css' media='screen'
+          href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css'>
+    <script src="~/js/OrderDoc.js"></script>
+</head>
+
+<body class="text-left">
+    <div class="app-admin-wrap layout-sidebar-large">
+        <div class="main-header">
+            <div class="logo">
+                <img src="../../dist-assets/images/logo.png" alt="">
+            </div>
+            <div class="menu-toggle">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="d-flex align-items-center">
+            </div>
+            <div style="margin: auto"></div>
+            <div class="header-part-right">
+                <!-- Full screen toggle -->
+                <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen></i>
+                <!-- Grid menu Dropdown -->
+                <!-- Notificaiton -->
+                <!-- Notificaiton End -->
+                <!-- User avatar dropdown -->
+                <div class="dropdown">
+                    <div class="user col align-self-end">
+                        <img src="../../dist-assets/images/faces/1.jpg" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <div class="dropdown-header">
+                                <i class="i-Lock-User mr-1"></i> Timothy Carlson
+                            </div>
+                            @*                            <a class="dropdown-item">Account settings</a>
+                            <a class="dropdown-item">Billing history</a>*@
+                            <a class="dropdown-item" href="https://localhost:7092/Auth/Login">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="side-content-wrap">
+            <div class="sidebar-left open rtl-ps-none" data-perfect-scrollbar="" data-suppress-scroll-x="true">
+                <ul class="navigation-left">
+                    <li class="nav-item" data-item="dashboard">
+                        <a class="nav-item-hold" href=""><i class="nav-icon i-Bar-Chart"></i><span class="nav-text">Dashboard</span></a>
+                        <div class="triangle"></div>
+                    </li>
+                    <li class="nav-item" data-item="uikits">
+                        <a class="nav-item-hold" href="#"><i class="nav-icon i-Suitcase @*i-Library*@"></i><span class="nav-text">Your Orders </span></a>
+                        <div class="triangle"></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-left-secondary rtl-ps-none" data-perfect-scrollbar="" data-suppress-scroll-x="true">
+                <!-- Submenu Dashboards-->
+                <ul class="childNav" data-parent="dashboard">
+                    <li class="nav-item"><a href="Supplierhome"><i class="nav-icon i-Medal-2"></i><span class="item-name">Dashboard</span></a></li>
+                </ul>
+
+                <ul class="childNav" data-parent="uikits">
+                    <li class="nav-item"><a href="ViewProduct"><i class="nav-icon i-Belt-3"></i><span class="item-name">Your Order List</span></a></li>
+                </ul>
+
+            </div>
+
+            <div class="sidebar-overlay"></div>
+        </div>
+        <!-- =============== Left side End ================-->
+        <div class="main-content-wrap sidenav-open d-flex flex-column">
+            <!-- ============ Body content start ============= -->
+            <div class="main-content">
+                <div class="breadcrumb">
+                    @*<h1 class="mr-2">Version 1</h1>*@
+                    <ul>
+                        <li><a href="">Dashboard</a></li>
+                        <li>Supplier</li>
+                        <li>All Orders</li>
+                    </ul>
+                </div>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <!-- ICON BG-->
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Oder Value</th>
+                                        <th scope="col">Order Status</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Mobile</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Is Active</th>
+                                        <th scope="col">CreatedDate</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <th scope="row">
+                                                @Html.DisplayFor(modelItem => item.OrderId)
+                                            </th>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.OderValue)
+                                            </td>
+                                            <td>
+                                                @*@if (item.ProductCategoryId == 1)
+                                            {
+                                            <span>Laptop</span>
+                                            }
+                                            else if (item.ProductCategoryId == 2)
+                                            {
+                                            <span>Desktop PC</span>
+                                            }
+                                            else
+                                            {
+                                            <span>Gaming PC</span>
+                                            }
+                                            *@ @Html.DisplayFor(modelItem => item.OrderStatus)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mobile)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Address)
+                                            </td>
+                                            <td>
+                                                @if (item.IsActive == true)
+                                                {
+                                                    <span class="badge badge-success">Active</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-warning">Not Active</span>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                                            </td>
+                                            <td>
+                                                <input class="form-control" id="recipient-name-2" type="text" / hidden ="hidden">
+                                                <button id="getorderbtn" class="btn btn-success" onclick="ChangeStatus_Click(@item.OrderId, @item.UserId, @item.SupplierId);" type="button"><i></i>Change Status</button>
+
+                                                <button id="Cancelbtn" class="btn btn-danger" onclick="CancelBtn_Click(@item.OrderId, @item.UserId, @item.SupplierId);" type="button"><i class="nav-icon i-Pen-2"></i>Cancel</button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- end of main-content -->
+            </div><!-- Footer Start -->
+            <div class="flex-grow-1"></div>
+            <div class="app-footer">
+                <div class="row">
+                    <div class="col-md-9">
+                        @* <p><strong></strong></p>
+                        <p>
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero quis beatae officia saepe perferendis voluptatum minima eveniet voluptates dolorum, temporibus nisi maxime nesciunt totam repudiandae commodi sequi dolor quibusdam
+                        <sunt></sunt>
+                        </p>*@
+                    </div>
+                </div>
+                <div class="footer-bottom border-top pt-3 d-flex flex-column flex-sm-row align-items-center">
+                    <a class="btn btn-primary text-white btn-rounded" href="https://themeforest.net/item/gull-bootstrap-laravel-admin-dashboard-template/23101970" target="_blank">About Us</a>
+                    <span class="flex-grow-1"></span>
+                    <div class="d-flex align-items-center">
+                        <img class="logo" @*src="../../dist-assets/images/logo.png" alt=""*@>
+                        <div>
+                            <p class="m-0">&copy; 2023 E-COM</p>
+                            <p class="m-0">All rights reserved</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- fotter end -->
+        </div>
+    </div><!-- ============ Search UI Start ============= -->
+    <!--  Verify Modal content -->
+    <div class="modal fade" id="ChangeStatusModalContent" tabindex="-1" role="dialog" aria-labelledby="verifyModalContent" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="verifyModalContent_title">Change Order Status</h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="Category"> Order Status</label>
+                            <select class="form-control form-control-rounded" name="ProductCategoryId" id="status">
+                                <option value=OrderAccepted>Order Accepted</option>
+                                <option value=Custormizing>Custormizing</option>
+                                <option value=Shipping>Shipping</option>
+                                <option value=Delivered>Delivered</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="button" onclick="SaveStatus_click();">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ Search UI End ============= -->
+    <script src="../../dist-assets/js/plugins/jquery-3.3.1.min.js"></script>
+    <script src="../../dist-assets/js/plugins/bootstrap.bundle.min.js"></script>
+    <script src="../../dist-assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="../../dist-assets/js/scripts/script.min.js"></script>
+    <script src="../../dist-assets/js/scripts/sidebar.large.script.min.js"></script>
+    <script src="../../dist-assets/js/plugins/echarts.min.js"></script>
+    <script src="../../dist-assets/js/scripts/echart.options.min.js"></script>
+    <script src="../../dist-assets/js/scripts/dashboard.v1.script.min.js"></script>
+    <script src="../../dist-assets/js/scripts/customizer.script.min.js"></script>
+</body>
+
+</html>

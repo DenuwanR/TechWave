@@ -1,0 +1,163 @@
+﻿@model IEnumerable<ECOMSYSTEM.Shared.Models.ItemCartDetails>
+@{
+    Layout = "_Layout";
+
+    int itemCount = 0;
+    float? totalAmount = 0;
+    long itemId = 0;
+}
+
+
+<!DOCTYPE html>
+<html lang="en" dir="">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Dashboard </title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet" />
+    <link href="../../dist-assets/css/themes/lite-purple.min.css" rel="stylesheet" />
+    <link href="../../dist-assets/css/plugins/perfect-scrollbar.min.css" rel="stylesheet" />
+
+    <script src="~/js/ItemCartDoc.js"></script>
+    <script src="~/js/OrderDoc.js"></script>
+    <!-- Sweet alert -->
+    <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body class="text-left">
+
+    <!-- ============ Body content start ============= -->
+    <div class="main-content">
+        <div class="breadcrumb">
+            <h1>Cart</h1>
+            <ul>
+                <li><a href="">Apps</a></li>
+                <li>Product Cart</li>
+            </ul>
+        </div>
+        <div class="separator-breadcrumb border-top"></div>
+        <!-- content goes here-->
+        <section class="product-cart">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">Product Cart</div><span class="text-muted"></span>
+                            <div class="table-responsive">
+                                <table class="table" id="cartTbl">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">SL.</th>
+                                            <th scope="col">Product</th>
+                                            @* <th scope="col">Price</th> *@
+                                            <th scope="col">Quantity</th>
+                                            @* <th scope="col">Total</th> *@
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.ItemId)</td>
+                                                <td scope="row">
+                                                    <div class="ul-product-cart__detail d-inline-block align-middle ml-1">
+                                                        <a href="">
+                                                            <h6 class="heading">@Html.DisplayFor(modelItem => item.ItemName)</h6>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                @* <td>Rs.@Html.DisplayFor(modelItem => item.ItemPrice)</td> *@
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ItemQty)
+                                                </td>
+                                                @* <td>Rs.@Html.DisplayFor(modelItem => item.TotalPrice)</td> *@
+                                                <td><button id="ItemRemoveBtn" onclick="ItemRemove_Click('@item.ItemId');" class="btn btn-danger"><i class="i-Close-Window text-19 text-white font-weight-700"></i></button></td>
+                                            </tr>
+
+                                            itemId = item.ItemId;
+                                            itemCount++;
+                                            totalAmount += item.ItemPrice * item.ItemQty;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-lg-6 mt-5">
+                                    <div class="ul-product-cart__invoice">
+                                        <div class="card-title">
+                                            @* <h4 class="heading text-primary">Total Payment</h4> *@
+                                        </div>
+                                        @* <table class="table">
+                                            <tbody>
+
+                                                <tr>
+                                                    <th class="text-16" scope="row">Subtotal</th>
+                                                    <td class="text-16 text-success font-weight-700">@totalAmount</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-primary text-16" scope="row">Total:</th>
+                                                    <td class="font-weight-700 text-16">@totalAmount</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table> *@
+                                        <div class="ul-product-cart__button text-right">
+                                            <button class="btn btn-primary ripple m-1" type="button" onclick="SendMyInbox_click('@itemCount');">Get Quotations</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- end of main-content -->
+        <!-- end of main-content -->
+
+    <!--  Verify Modal content -->
+    <div class="modal fade" id="verifyModalContent" tabindex="-1" role="dialog" aria-labelledby="verifyModalContent" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verifyModalContent_title">Please submit your details to receive the quotation!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-2">Name:</label>
+                            <input class="form-control" id="name" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-2">Email:</label>
+                            <input class="form-control" id="email" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-2">Mobile:</label>
+                            <input class="form-control" id="mobile" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-2">Address:</label>
+                            <input class="form-control" id="address" type="text" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="button" onclick="SendMailbtn_click('@itemId');">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

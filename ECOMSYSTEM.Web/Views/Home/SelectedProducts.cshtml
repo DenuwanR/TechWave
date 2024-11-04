@@ -1,0 +1,183 @@
+﻿@model IEnumerable<ECOMSYSTEM.Shared.Models.ProductDetails>
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="">
+
+<head>
+    <script src="~/js/OrderDoc.js"></script>
+    <script src="~/js/ItemCartDoc.js"></script>
+    <script src="~/js/CustomizeProductDoc.js"></script>
+
+</head>
+
+<body class="text-left">
+
+    <!-- ============ Body content start ============= -->
+    <div class="main-content">
+        <div class="breadcrumb">
+            @*<h1 class="mr-2">Version 1</h1>*@
+            <ul>
+                <li><a href="">Dashboard</a></li>
+                <li>Version 1</li>
+            </ul>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4 o-hidden">
+                            <img class="card-img-top" src="@("~/Image/"+item.ImageName)" asp-append-version="true" />
+                            <div class="card-body">
+                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.ProductName)</h5>
+                                <p class="card-text"> @Html.DisplayFor(modelItem => item.Description)</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Rs.@Html.DisplayFor(modelItem => item.Price).00</li>
+                            </ul>
+                            <div class="card-body"><button class="btn btn-primary btn-block btn-rounded mt-2 float-right" onclick="CustomizationBtn_Click(@item.ProductId);">View & Custormize</button></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <!-- end of main-content -->
+    </div>
+
+
+    <!--  Modal -->
+    <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle-2">Custormization</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4 o-hidden">
+                                <img class="card-img-top" id="Image" />
+                                <div class="card-body">
+                                    <h5 class="card-title" id="Productname"></h5>
+                                    <p class="card-text" id="Description"></p>
+                                    <p class="card-text" id="ProductId" hidden='hidden'></p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item" id="Price"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Category">Processor</label>
+                                <select class="form-control form-control-rounded" onchange="Price()" name="ProductCategoryId" id="Processor">
+                                    <option value=0>Select</option>
+                                    <option value=40000>I5 - Rs.40000.00</option>
+                                    <option value=55000>I7 - Rs.55000.00</option>
+                                    <option value=75000>I9 - Rs.75000.00</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Category">Motherboard</label>
+                                <select class="form-control form-control-rounded" onchange="Price()" name="ProductCategoryId" id="Motherboard">
+                                    <option value=0>Select</option>
+                                    <option value=35000>Atom - Rs.35000.00</option>
+                                    <option value=45000>Foxcorn - Rs.45000.00</option>
+                                    <option value=55000>Intel - Rs.55000.00</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Category">RAM</label>
+                                <select class="form-control form-control-rounded" onchange="Price()" name="ProductCategoryId" id="RAM">
+                                    <option value=0>Select</option>
+                                    <option value=20000>8GB - Rs.20000.00</option>
+                                    <option value=32000>16GB - Rs.32000.00</option>
+                                    <option value=45000>32GB - Rs.45000.00</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Category">VGA</label>
+                                <select class="form-control form-control-rounded" onchange="Price()" name="ProductCategoryId" id="VGA">
+                                    <option value=0>Select</option>
+                                    <option value=24000>4GB - Rs.24000.00</option>
+                                    <option value=50000>8GB - Rs.50000.00</option>
+                                    <option value=75000>16GB - Rs.75000.00</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Category">HDD</label>
+                                <select class="form-control form-control-rounded" onchange="Price()" name="ProductCategoryId" id="HDD">
+                                    <option value=0>Select</option>
+                                    <option value=13000>Sata 1TB - Rs.13000.00</option>
+                                    <option value=35000>SSD 1TB - Rs.35000.00</option>
+                                    <option value=45000>SSD M.2 1TB - Rs.45000.00</option>
+                                </select>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label for="Category">Quentity</label>
+                                <select class="form-control form-control-rounded" onchange="Price()" name="ProductCategoryId" id="QTY">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=3>3</option>
+                                    <option value=4>4</option>
+                                    <option value=5>5</option>
+                                </select>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label for=""> <h2>Total Amount: <label id="totalPrice"> </label> </> </h2></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary ml-2" type="button" onclick="AddtoCartBtn_Click();">Add to cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Modal -->
+    <div class="modal fade bd-example-modal-lg" id="orderList" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle-2">Order List</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4 o-hidden">
+                                <img class="card-img-top" id="Image" />
+                                <div class="card-body">
+                                    <h5 class="card-title" id="Productname"></h5>
+                                    <p class="card-text" id="Description"></p>
+                                    <p class="card-text" id="ProductId" hidden='hidden'></p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item" id="Price"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
