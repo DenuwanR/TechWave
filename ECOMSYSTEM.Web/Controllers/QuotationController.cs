@@ -6,9 +6,9 @@ namespace ECOMSYSTEM.Web.Controllers
 {
     public class QuotationController : Controller
     {
-        private readonly IQuotationDetails _quotationDetails;
+        private readonly IQuotationRepository _quotationDetails;
 
-        public QuotationController(IQuotationDetails quotationDetails)
+        public QuotationController(IQuotationRepository quotationDetails)
         {
             _quotationDetails = quotationDetails;
         }

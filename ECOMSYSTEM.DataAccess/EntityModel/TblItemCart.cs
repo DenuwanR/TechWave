@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace ECOMSYSTEM.DataAccess.EntityModel
 {
@@ -8,6 +9,8 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
         public TblItemCart()
         {
             TblOrders = new HashSet<TblOrder>();
+
+            TblQuotation  = new HashSet<TblQuotation>();
         }
 
         public long ItemId { get; set; }

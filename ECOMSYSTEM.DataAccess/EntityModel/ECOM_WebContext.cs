@@ -144,11 +144,17 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TblQuota__ItemId__5CD6CB2B"); // Updated foreign key name
 
-                entity.HasOne(d => d.Supplier)
-                    .WithMany(p => p.TblQuotationsAsSupplier)
-                    .HasForeignKey(d => d.SupplierId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TblQuota__Suppli__4AB81AF0");
+                //entity.HasOne(d => d.Supplier)
+                //    .WithMany(p => p.TblQuotationsAsSupplier)
+                //    .HasForeignKey(d => d.SupplierId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK__TblQuota__Suppli__4AB81AF0");
+
+                entity.HasOne(d => d.Item)
+                   .WithMany(p => p.TblQuotation)
+                   .HasForeignKey(d => d.UserId) // If UserId is being used
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK_TblQuotation_TblItemCart_UserId");
             });
 
             OnModelCreatingPartial(modelBuilder);

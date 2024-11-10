@@ -5,7 +5,6 @@ CREATE TABLE [dbo].[TblQuotation] (
     [QuotationAmount] [float] NULL,
     [CreatedDate] [datetime] NULL,
     [UserId] [bigint] NULL,
-    FOREIGN KEY (UserId) REFERENCES TblUserRegistration(UserId),
-    FOREIGN KEY (SupplierId) REFERENCES TblUserRegistration (UserId),
+    FOREIGN KEY (UserId) REFERENCES TblItemCart(ItemId),
     FOREIGN KEY (ItemId) REFERENCES TblItemCart (ItemId)
 );

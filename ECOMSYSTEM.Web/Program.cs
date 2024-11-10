@@ -1,3 +1,4 @@
+using ECOMSYSTEM.DataAccess.EntityModel;
 using ECOMSYSTEM.Repository.ApplicationUsers;
 using ECOMSYSTEM.Repository.ItemDetails;
 using ECOMSYSTEM.Repository.OderDetails;
@@ -6,6 +7,7 @@ using ECOMSYSTEM.Shared;
 using ECOMSYSTEM.Shared.Models;
 using ECOMSYSTEM.Web;
 using ECOMSYSTEM.Web.Services;
+using ECOMSYSTEM.Shared.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,10 @@ builder.Services.AddScoped<IOrderDetails, OrderService>();
 builder.Services.AddScoped<IProductDetails, ProductService>();
 builder.Services.AddScoped<IItemCartDetails, ItemCartService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+// In Program.cs or Startup.cs
+builder.Services.AddDbContext<ECOM_WebContext>();
+builder.Services.AddScoped<IQuotationRepository, QuotationRepository>();
+
 
 var app = builder.Build();
 

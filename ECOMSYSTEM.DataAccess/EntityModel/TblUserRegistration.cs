@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace ECOMSYSTEM.DataAccess.EntityModel
 {
@@ -24,7 +25,7 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
 
         public virtual ICollection<TblItemCart> TblItemCarts { get; set; }
         public virtual ICollection<TblOrder> TblOrders { get; set; }
+        //public virtual ICollection<TblQuotation> TblQuotationsAsSupplier { get; set; } = new List<TblQuotation>();
 
-        public virtual ICollection<TblQuotation> TblQuotationsAsSupplier { get; set; } = new List<TblQuotation>();
     }
 }

@@ -5,30 +5,33 @@ using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using System.Net.Mail;
 using MailKit.Net.Smtp;
+using Microsoft.EntityFrameworkCore;
+using ECOMSYSTEM.DataAccess.EntityModel;
+using ECOMSYSTEM.Shared.Interfaces;
 
 namespace ECOMSYSTEM.Web.Controllers
 {
     public class OrderController : Controller
     {
         private readonly ILogger<OrderController> _logger;
-        /// <summary>
-        /// The application product service
-        /// </summary>
+   
         private readonly IItemCartDetails _itemCartService;
         private readonly IOrderDetails _applicationOrderService;
-        /// <summary>
-        /// Gets the web host environment.
-        /// </summary>
+
+        private readonly IQuotationRepository _quotationRepository;
+        private readonly ECOM_WebContext _context;
+
         /// <param name="logger">The logger.</param>
         /// <param name="itemCartDetailsService">The item cart details service.</param>
-        /// <value>
-        /// The web host environment.
-        /// </value>
-        public OrderController(ILogger<OrderController> logger, IItemCartDetails itemCartDetailsService, IOrderDetails applicationOrderService)
+
+        public OrderController(ILogger<OrderController> logger, IItemCartDetails itemCartDetailsService, IOrderDetails applicationOrderService, IQuotationRepository quotationRepository,
+        ECOM_WebContext context)
         {
             _logger = logger;
             _itemCartService = itemCartDetailsService;
             _applicationOrderService = applicationOrderService;
+            _quotationRepository = quotationRepository;
+            _context = context;
         }
 
         [HttpGet]
@@ -142,6 +145,11 @@ namespace ECOMSYSTEM.Web.Controllers
                 var result = _applicationOrderService.UpdateOrderDetails(orderDetails);
                 if (result == true)
                 {
+                 
+                    // Create a new quotation in TblQuotation
+                    _quotationRepository.CreateQuotation(orderDetails.ItemId, orderDetails.UserId);
+                   
+
                     SendMailToCustomer(orderDetails);
                     return Json(new
                     {
