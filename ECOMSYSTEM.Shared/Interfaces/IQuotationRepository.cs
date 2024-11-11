@@ -9,8 +9,7 @@ namespace ECOMSYSTEM.Shared.Interfaces
     {
         
         Task<IEnumerable<Quotation>> GetAllQuotations();
-        Task<bool> UpdateQuotationStatus(long QuotationId, string status);
-        Task <bool> CreateQuotation(long itemId, long userId, string status = "Pending");
+        Task <bool> CreateQuotation(long itemId, long userId);
 
     }
 }

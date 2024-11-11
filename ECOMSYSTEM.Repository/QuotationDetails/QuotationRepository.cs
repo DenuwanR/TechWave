@@ -5,19 +5,18 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Threading.Tasks;
 
 public class QuotationRepository : IQuotationRepository
 {
     private readonly ECOM_WebContext _context;
-    
+
     public QuotationRepository(ECOM_WebContext context)
     {
         _context = context;
     }
 
-    public async Task<bool> CreateQuotation(long itemId, long userId, string status = "Pending")
+    public async Task<bool> CreateQuotation(long itemId, long userId)
     {
         try
         {
@@ -25,8 +24,8 @@ public class QuotationRepository : IQuotationRepository
             {
                 ItemId = itemId,
                 UserId = userId,
-                CreatedDate = DateTime.Now,
-                QuotationStatus = status
+                CreatedDate = DateTime.Now
+                // No QuotationStatus property here anymore
             };
             await _context.TblQuotations.AddAsync(newQuotation);
             var affectedRows = await _context.SaveChangesAsync();  // Save changes and capture the number of affected rows
@@ -38,7 +37,6 @@ public class QuotationRepository : IQuotationRepository
         }
     }
 
-
     public async Task<IEnumerable<Quotation>> GetAllQuotations()
     {
         var quotations = await _context.TblQuotations
@@ -47,34 +45,11 @@ public class QuotationRepository : IQuotationRepository
                 QuotationId = q.QuotationId,
                 ItemId = q.ItemId,
                 UserId = q.UserId,
-                CreatedDate = q.CreatedDate,
-                QuotationStatus = q.QuotationStatus
-                // Map other properties as needed
+                CreatedDate = q.CreatedDate
+                // No QuotationStatus property here anymore
             })
             .ToListAsync();
 
         return quotations;
-    }
-
-   
-
-    public async Task<bool> UpdateQuotationStatus(long QuotationId, string status)
-    {
-        try
-        {
-            var quotation = await _context.TblQuotations.FindAsync(QuotationId);
-            
-            if (quotation == null)
-                return false;
-
-            quotation.QuotationStatus = status;
-            await _context.SaveChangesAsync();
-            
-            return true;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
     }
 }

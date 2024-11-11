@@ -18,12 +18,6 @@ namespace ECOMSYSTEM.Web.Controllers
             var quotations = await _quotationDetails.GetAllQuotations();
             return View(quotations);
         }
-
-        [HttpPost]
-        public async Task<JsonResult> UpdateStatus(long quotationId, string status)
-        {
-            var result = await _quotationDetails.UpdateQuotationStatus(quotationId, status);
-            return Json(new { success = result });
-        }
+      
     }
 }
