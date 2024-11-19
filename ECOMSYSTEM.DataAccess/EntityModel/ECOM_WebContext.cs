@@ -15,7 +15,6 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
         {
         }
 
-        // Add the DbSet for TblSupplierQuote
         public virtual DbSet<TblItemCart> TblItemCarts { get; set; } = null!;
         public virtual DbSet<TblOrder> TblOrders { get; set; } = null!;
         public virtual DbSet<TblProduct> TblProducts { get; set; } = null!;
@@ -140,18 +139,18 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
                 //    .HasMaxLength(50)
                 //    .IsUnicode(false);
 
-                entity.HasOne(d => d.Item)
+                entity.HasOne(d => d.ItemCart)
                     .WithMany(p => p.TblQuotations)
                     .HasForeignKey(d => d.ItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TblQuota__ItemId__5CD6CB2B");
 
-                // Ensure this relationship uses the correct foreign key
-                //entity.HasOne(d => d.User)
-                //   .WithMany(p => p.TblQuotations)
-                //   .HasForeignKey(d => d.UserId)
-                //   .OnDelete(DeleteBehavior.ClientSetNull)
-                //   .HasConstraintName("FK_TblQuotation_TblItemCart_UserId");
+                //Ensure this relationship uses the correct foreign key
+                entity.HasOne(d => d.User)
+                   .WithMany(p => p.TblQuotations)
+                   .HasForeignKey(d => d.UserId)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK_TblQuotation_TblItemCart_UserId");
             });
 
             // Add configuration for TblSupplierQuote

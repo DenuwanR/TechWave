@@ -18,13 +18,13 @@ namespace ECOMSYSTEM.Web.Controllers
         private readonly IItemCartDetails _itemCartService;
         private readonly IOrderDetails _applicationOrderService;
 
-        private readonly IQuotationRepository _quotationRepository;
+        private readonly IOrderDetails _quotationRepository;
         private readonly ECOM_WebContext _context;
 
         /// <param name="logger">The logger.</param>
         /// <param name="itemCartDetailsService">The item cart details service.</param>
 
-        public OrderController(ILogger<OrderController> logger, IItemCartDetails itemCartDetailsService, IOrderDetails applicationOrderService, IQuotationRepository quotationRepository,
+        public OrderController(ILogger<OrderController> logger, IItemCartDetails itemCartDetailsService, IOrderDetails applicationOrderService, IOrderDetails quotationRepository,
         ECOM_WebContext context)
         {
             _logger = logger;
@@ -146,8 +146,8 @@ namespace ECOMSYSTEM.Web.Controllers
                 if (result == true)
                 {
                  
-                    // Create a new quotation in TblQuotation
-                    _quotationRepository.CreateQuotation(orderDetails.ItemId, orderDetails.UserId);
+                    //// Create a new quotation in TblQuotation
+                    //_quotationRepository.CreateQuotation(orderDetails.ItemId, orderDetails.UserId);
                    
 
                     SendMailToCustomer(orderDetails);

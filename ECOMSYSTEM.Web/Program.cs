@@ -8,6 +8,11 @@ using ECOMSYSTEM.Shared.Models;
 using ECOMSYSTEM.Web;
 using ECOMSYSTEM.Web.Services;
 using ECOMSYSTEM.Shared.Interfaces;
+using ECOMSYSTEM.Repository.QuotationDetails;
+using ECOMSYSTEM.Shared.Interfaces;
+using AutoMapper;
+//using ECOMSYSTEM.Service;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +30,9 @@ builder.Services.AddScoped<IItemCartDetails, ItemCartService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // In Program.cs or Startup.cs
 builder.Services.AddDbContext<ECOM_WebContext>();
-builder.Services.AddScoped<IQuotationRepository, QuotationRepository>();
+builder.Services.AddScoped<IQuotationDetails, QuotationService>();
+builder.Services.AddScoped<IQuotationRepository, QuotationDetailsRepository>();
+
 
 
 var app = builder.Build();
@@ -50,3 +57,5 @@ app.MapControllerRoute(
     pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 app.Run();
+
+

@@ -1,101 +1,35 @@
 ﻿using ECOMSYSTEM.Shared;
 using ECOMSYSTEM.Shared.Models;
-using ECOMSYSTEM.Web.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ECOMSYSTEM.Web.Controllers
 {
     public class SupplierController : Controller
     {
+        private readonly IQuotationDetails _quotationService;
+
+        public SupplierController(IQuotationDetails quotationService)
+        {
+            _quotationService = quotationService;
+        }
+
         /// <summary>
-        /// The configuration
+        /// Displays the Supplier Dashboard with data for suppliers.
         /// </summary>
-        private readonly IConfiguration _config;
-        /// <summary>
-        /// The logger
-        /// </summary>
-        private readonly ILogger<SupplierController> _logger;
-        private readonly IOrderDetails _applicationOrderService;
-        public SupplierController(ILogger<SupplierController> logger,  IConfiguration config, IOrderDetails applicationOrderService)
+        public async Task<IActionResult> SupplierHome()
         {
-            _logger = logger;
-            _config = config;
-            _applicationOrderService = applicationOrderService;
-        }
-
-        public IActionResult SupplierHome()
-        {
-            var result = _applicationOrderService.GetAllOrders();
-            return View(result);
-        }
-
-        public IActionResult SupplierOrderList()
-        {
-            long? supplierId = ApplicationSession.SupplierId;
-            var result = _applicationOrderService.GetSupplierOrder(supplierId);
-            return View(result);
-        }
-
-        public IActionResult UpdateOrder(OrderDetails orderDetails)
-        {
-            orderDetails.SupplierId = ApplicationSession.SupplierId;
-            var result = _applicationOrderService.UpdateOrderDetails(orderDetails);
-            if(result == true)
+            try
             {
-                return Json(new
-                {
-                    success = true,
-                    newUrl = Url.Action("Supplierhome", "Supplier")
-                });
-
+                // Fetch quotations for the supplier dashboard
+                var quotations = await _quotationService.GetAllQuotations();
+                return View(quotations); // Pass the data to SupplierHome.cshtml
             }
-
-            return Json(new
+            catch (Exception ex)
             {
-                success = false
-            });
-        }
-
-        public IActionResult UpdateOrderStatus(OrderDetails orderDetails)
-        {
-            orderDetails.SupplierId = ApplicationSession.SupplierId;
-            var result = _applicationOrderService.UpdateOrderStatus(orderDetails);
-            if (result == true)
-            {
-                return Json(new
-                {
-                    success = true,
-                    newUrl = Url.Action("Supplierhome", "Supplier")
-                });
-
+                TempData["Error"] = $"Error loading supplier data: {ex.Message}";
+                return RedirectToAction("Index", "Home");
             }
-
-            return Json(new
-            {
-                success = false
-            });
         }
-
-        public IActionResult CancelOrder(OrderDetails orderDetails)
-        {
-            orderDetails.Type = "Cancel";
-            var result = _applicationOrderService.UpdateOrderDetails(orderDetails);
-            if (result == true)
-            {
-                return Json(new
-                {
-                    success = true,
-                    newUrl = Url.Action("Supplierhome", "Supplier")
-                });
-            }
-
-            return Json(new
-            {
-                success = false
-            });
-        }
-
-
     }
 }
