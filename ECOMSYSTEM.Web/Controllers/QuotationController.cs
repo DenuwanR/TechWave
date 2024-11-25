@@ -105,8 +105,16 @@
 
 
 
+using ECOMSYSTEM.DataAccess.EntityModel;
 using ECOMSYSTEM.Repository.QuotationDetails;
+using ECOMSYSTEM.Repository.SupplierQuoteDetails;
+using ECOMSYSTEM.Shared;
+using ECOMSYSTEM.Shared.Models;
+
+
+//using ECOMSYSTEM.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace ECOMSYSTEM.Web.Controllers
@@ -114,10 +122,14 @@ namespace ECOMSYSTEM.Web.Controllers
     public class QuotationController : Controller
     {
         private readonly IQuotationRepository _quotationRepository;
+        //private readonly ECOM_WebContext _context;
 
-        public QuotationController(IQuotationRepository quotationRepository)
+
+
+        public QuotationController(IQuotationRepository quotationRepository/*ECOM_WebContext context*/)
         {
             _quotationRepository = quotationRepository;
+            //_context = context;
         }
 
         public async Task<IActionResult> ViewQuotations()

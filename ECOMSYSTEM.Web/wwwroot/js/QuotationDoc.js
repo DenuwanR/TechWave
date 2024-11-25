@@ -1,15 +1,15 @@
-﻿function OrderListClick() {
+﻿function QuotationListClick() {
 
     $.ajax({
         type: 'Get',
-        url: '/Quotation/ViewQuotations',
+        url: '/SupplierQuote/UserView',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         data: null,
         success: function (result) {
             if (result.success == true) {
-                location.replace("https://localhost:7092/Quotation/ViewQuotations")
+                location.replace("https://localhost:7092/SupplierQuote/UserView")
             } else {
-                location.replace("https://localhost:7092/Quotation/ViewQuotations")
+                location.replace("https://localhost:7092/SupplierQuote/UserView")
             }
         },
         error: function () {

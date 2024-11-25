@@ -12,6 +12,8 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
         public DateTime CreatedDate { get; set; }  // Timestamp when the quotation was created
 
         // Navigation properties
-        public virtual TblQuotation Quotation { get; set; }  // Navigation to TblQuotation (via ItemId and UserId)
+        public virtual TblQuotation? Quotation { get; set; }  // Navigation to TblQuotation (via ItemId and UserId)
+        public virtual TblUserRegistration? User { get; set; }  // Navigation to TblUserRegistration (Customer)
+        public virtual TblUserRegistration? Supplier { get; set; }  // Navigation to TblQuotation (via ItemId and UserId)
     }
 }

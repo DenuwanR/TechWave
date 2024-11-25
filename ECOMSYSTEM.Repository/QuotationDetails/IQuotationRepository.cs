@@ -10,6 +10,5 @@ namespace ECOMSYSTEM.Repository.QuotationDetails
         Task<IEnumerable<ECOMSYSTEM.Shared.Models.QuotationDetails>> GetAllQuotations();
         //Task<bool> AddSupplierQuote(long quotationId, long? supplierId, double quotationAmount);
         //Task<IEnumerable<ECOMSYSTEM.Shared.Models.QuotationDetails>> GetQuotationsForSuppliers();
-        //Task<IEnumerable<ECOMSYSTEM.Shared.Models.QuotationDetails>> GetQuotationsForItem(long itemId);
     }
 }

@@ -12,7 +12,7 @@ public class TblQuotation
      
     // Navigation properties
     public virtual TblItemCart? ItemCart { get; set; }
-    public virtual ICollection<TblSupplierQuote> TblSupplierQuotes { get; set; }
-    public virtual TblUserRegistration User { get; set; }
+    public virtual ICollection<TblSupplierQuote?> TblSupplierQuotes { get; set; }
+    public virtual TblUserRegistration? User { get; set; }
 
 }

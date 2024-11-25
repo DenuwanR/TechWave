@@ -75,14 +75,15 @@
             if (amount) {
                 // Make an AJAX call to the server to submit the quotation amount
                 $.ajax({
-                    url: '/Supplier/SaveQuotationAmount', // Update with your actual controller and action
+                    url: '/Supplier/SaveQuotationAmount', // Correct URL to the controller and action
                     method: 'POST',
                     data: {
                         QuotationId: quotationId,
                         QuotationAmount: amount
                     },
                     success: function (response) {
-                        Swal.fire('Success', 'Quotation amount submitted successfully!', 'success');
+                        // Assuming the response has a message property
+                        Swal.fire('Success', response.message, 'success');
                     },
                     error: function (error) {
                         Swal.fire('Error', 'Failed to submit quotation amount.', 'error');
@@ -93,6 +94,7 @@
             }
         }
     </script>
+
 </body>
 
 </html>

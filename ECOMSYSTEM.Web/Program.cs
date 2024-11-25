@@ -11,6 +11,7 @@ using ECOMSYSTEM.Shared.Interfaces;
 using ECOMSYSTEM.Repository.QuotationDetails;
 using ECOMSYSTEM.Shared.Interfaces;
 using AutoMapper;
+using ECOMSYSTEM.Repository.SupplierQuoteDetails;
 //using ECOMSYSTEM.Service;
 
 
@@ -32,6 +33,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<ECOM_WebContext>();
 builder.Services.AddScoped<IQuotationDetails, QuotationService>();
 builder.Services.AddScoped<IQuotationRepository, QuotationDetailsRepository>();
+builder.Services.AddScoped<ISupplierQuoteRepository, SupplierQuoteDetailsRepository>();
+builder.Services.AddScoped<ISupplierQuoteDetails,SupplierQuoteService>();
+
 
 
 
