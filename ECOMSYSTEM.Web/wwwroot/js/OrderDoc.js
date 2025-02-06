@@ -204,7 +204,7 @@ function CancelBtn_Click(orderId, userId, supplierId) {
             } else {
                 Swal.fire(
                     'Error!',
-                    'Something went wrong!',
+                    'Samothing went wrong!',
                     'error'
                 )
             }

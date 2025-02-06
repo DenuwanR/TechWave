@@ -174,39 +174,6 @@ namespace ECOMSYSTEM.DataAccess.Migrations
                     b.ToTable("TblProducts");
                 });
 
-            modelBuilder.Entity("ECOMSYSTEM.DataAccess.EntityModel.TblSupplierQuote", b =>
-                {
-                    b.Property<long>("SupplierQuoteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("SupplierQuoteId"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<double>("QuotationAmount")
-                        .HasColumnType("float");
-
-                    b.Property<long>("QuotationId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("QuotationStatus")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<long>("SupplierId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("SupplierQuoteId")
-                        .HasName("PK__TblSuppo__2A5B08B07946F69D");
-
-                    b.HasIndex("QuotationId");
-
-                    b.ToTable("TblSupplierQuote", (string)null);
-                });
-
             modelBuilder.Entity("ECOMSYSTEM.DataAccess.EntityModel.TblUserRegistration", b =>
                 {
                     b.Property<long>("UserId")
@@ -266,19 +233,35 @@ namespace ECOMSYSTEM.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("QuotationId"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime");
 
                     b.Property<long>("ItemId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<double>("QuotationAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("QuotationStatus")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<long>("SupplierId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("QuotationId")
                         .HasName("PK__TblQuota__2B1397A1D476A42B");
 
                     b.HasIndex("ItemId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("TblQuotation", (string)null);
                 });
@@ -321,33 +304,36 @@ namespace ECOMSYSTEM.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECOMSYSTEM.DataAccess.EntityModel.TblSupplierQuote", b =>
-                {
-                    b.HasOne("TblQuotation", "Quotation")
-                        .WithMany("TblSupplierQuotes")
-                        .HasForeignKey("QuotationId")
-                        .IsRequired()
-                        .HasConstraintName("FK_TblSupplierQuote_TblQuotation_QuotationId");
-
-                    b.Navigation("Quotation");
-                });
-
             modelBuilder.Entity("TblQuotation", b =>
                 {
                     b.HasOne("ECOMSYSTEM.DataAccess.EntityModel.TblItemCart", "Item")
-                        .WithMany("TblQuotations")
+                        .WithMany("TblQuotation")
                         .HasForeignKey("ItemId")
                         .IsRequired()
                         .HasConstraintName("FK__TblQuota__ItemId__5CD6CB2B");
 
+                    b.HasOne("ECOMSYSTEM.DataAccess.EntityModel.TblUserRegistration", "Supplier")
+                        .WithMany("TblQuotationsAsSupplier")
+                        .HasForeignKey("SupplierId")
+                        .IsRequired()
+                        .HasConstraintName("FK__TblQuota__Suppli__4AB81AF0");
+
+                    b.HasOne("ECOMSYSTEM.DataAccess.EntityModel.TblUserRegistration", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Item");
+
+                    b.Navigation("Supplier");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECOMSYSTEM.DataAccess.EntityModel.TblItemCart", b =>
                 {
                     b.Navigation("TblOrders");
 
-                    b.Navigation("TblQuotations");
+                    b.Navigation("TblQuotation");
                 });
 
             modelBuilder.Entity("ECOMSYSTEM.DataAccess.EntityModel.TblProduct", b =>
@@ -360,11 +346,8 @@ namespace ECOMSYSTEM.DataAccess.Migrations
                     b.Navigation("TblItemCarts");
 
                     b.Navigation("TblOrders");
-                });
 
-            modelBuilder.Entity("TblQuotation", b =>
-                {
-                    b.Navigation("TblSupplierQuotes");
+                    b.Navigation("TblQuotationsAsSupplier");
                 });
 #pragma warning restore 612, 618
         }
