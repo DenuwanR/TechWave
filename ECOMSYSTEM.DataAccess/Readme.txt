@@ -7,8 +7,12 @@ Scaffold-DbContext [-Connection] [-Provider] [-OutputDir] [-Context] [-Schemas>]
 
 https://www.entityframeworktutorial.net/efcore/create-model-for-existing-database-in-ef-core.aspx
 
+for example : 
+#-----------------------
+Scaffold-DbContext "Data Source=.;Initial Catalog=OSSECLINKDB;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir EntityModel -Force
+#-----------------------
 
 Reverse Engineering
 https://docs.microsoft.com/en-us/ef/core/managing-schemas/scaffolding?tabs=dotnet-core-cli
 
-Scaffold-DbContext "Data Source=LAPTOP-F81GNF66;Initial Catalog=ECOSYSTEMn;User ID=ecom;Password=1111;Encrypt=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir EntityModel -Force
+Scaffold-DbContext "Data Source=Randima;Initial Catalog=ECOM_Web;User ID=ossecadmin;Password=opensesami" Microsoft.EntityFrameworkCore.SqlServer -OutputDir EntityModel -Force

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 
 namespace ECOMSYSTEM.DataAccess.EntityModel
 {
     public partial class TblOrder
-    { 
+    {
         public long OrderId { get; set; }
         public long UserId { get; set; }
         public long ItemId { get; set; }
@@ -22,10 +21,6 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
         public long? SupplierId { get; set; }
 
         public virtual TblItemCart Item { get; set; } = null!;
-
-        public virtual TblUserRegistration User { get; set; }  // Navigation property to the user
-
-
-
+        public virtual TblUserRegistration User { get; set; } = null!;
     }
 }
