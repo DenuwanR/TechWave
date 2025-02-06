@@ -1,101 +1,91 @@
-﻿using ECOMSYSTEM.Shared;
+﻿using ECOMSYSTEM.DataAccess.EntityModel;
+using ECOMSYSTEM.Shared;
 using ECOMSYSTEM.Shared.Models;
-using ECOMSYSTEM.Web.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECOMSYSTEM.Web.Controllers
 {
     public class SupplierController : Controller
     {
+        private readonly IQuotationDetails _quotationService;
+        private readonly ECOM_WebContext _context; 
+
+        // Inject the services
+        public SupplierController(IQuotationDetails quotationService, ECOM_WebContext context)
+        {
+            _quotationService = quotationService;
+            _context = context;
+        }
+
         /// <summary>
-        /// The configuration
+        /// Displays the Supplier Dashboard with data for suppliers.
         /// </summary>
-        private readonly IConfiguration _config;
+        public async Task<IActionResult> SupplierHome()
+        {
+            try
+            {
+                // Fetch quotations for the supplier dashboard
+                var quotations = await _quotationService.GetAllQuotations();
+                return View(quotations); // Pass the data to SupplierHome.cshtml
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Error loading supplier data: {ex.Message}";
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         /// <summary>
-        /// The logger
+        /// Saves the supplier's quotation amount to TblSupplierQuote.
         /// </summary>
-        private readonly ILogger<SupplierController> _logger;
-        private readonly IOrderDetails _applicationOrderService;
-        public SupplierController(ILogger<SupplierController> logger,  IConfiguration config, IOrderDetails applicationOrderService)
+        [HttpPost]
+        [HttpPost]
+        public async Task<IActionResult> SaveQuotationAmount(long quotationId, double quotationAmount)
         {
-            _logger = logger;
-            _config = config;
-            _applicationOrderService = applicationOrderService;
-        }
-
-        public IActionResult SupplierHome()
-        {
-            var result = _applicationOrderService.GetAllOrders();
-            return View(result);
-        }
-
-        public IActionResult SupplierOrderList()
-        {
-            long? supplierId = ApplicationSession.SupplierId;
-            var result = _applicationOrderService.GetSupplierOrder(supplierId);
-            return View(result);
-        }
-
-        public IActionResult UpdateOrder(OrderDetails orderDetails)
-        {
-            orderDetails.SupplierId = ApplicationSession.SupplierId;
-            var result = _applicationOrderService.UpdateOrderDetails(orderDetails);
-            if(result == true)
+            try
             {
-                return Json(new
+                var supplierId = ApplicationSession.SupplierId; // Get supplier ID from session
+                var userId = ApplicationSession.applicationUserId; // Get user ID from session
+
+                if (supplierId == null || userId == null)
                 {
-                    success = true,
-                    newUrl = Url.Action("Supplierhome", "Supplier")
-                });
+                    return BadRequest("Invalid session data.");
+                }
 
-            }
+                // Check if quotation exists
+                var quotation = await _context.TblQuotations
+                    .FirstOrDefaultAsync(q => q.QuotationId == quotationId);
 
-            return Json(new
-            {
-                success = false
-            });
-        }
-
-        public IActionResult UpdateOrderStatus(OrderDetails orderDetails)
-        {
-            orderDetails.SupplierId = ApplicationSession.SupplierId;
-            var result = _applicationOrderService.UpdateOrderStatus(orderDetails);
-            if (result == true)
-            {
-                return Json(new
+                if (quotation == null)
                 {
-                    success = true,
-                    newUrl = Url.Action("Supplierhome", "Supplier")
-                });
+                    return NotFound("Quotation not found.");
+                }
 
-            }
-
-            return Json(new
-            {
-                success = false
-            });
-        }
-
-        public IActionResult CancelOrder(OrderDetails orderDetails)
-        {
-            orderDetails.Type = "Cancel";
-            var result = _applicationOrderService.UpdateOrderDetails(orderDetails);
-            if (result == true)
-            {
-                return Json(new
+                // Create and save TblSupplierQuote
+                var supplierQuote = new TblSupplierQuote
                 {
-                    success = true,
-                    newUrl = Url.Action("Supplierhome", "Supplier")
-                });
+                    QuotationId = quotationId,
+                    SupplierId = supplierId.Value, // Get SupplierId from session
+                    QuotationAmount = quotationAmount,
+                    CreatedDate = DateTime.UtcNow
+                };
+
+                _context.TblSupplierQuotes.Add(supplierQuote);
+                await _context.SaveChangesAsync();
+
+                return Ok("Quotation amount submitted successfully.");
             }
-
-            return Json(new
+            catch (Exception ex)
             {
-                success = false
-            });
+                // Log exception and return error message
+                //_logger.LogError(ex, "Error submitting quotation amount.");
+                return StatusCode(500, "Internal server error.");
+            }
         }
-
 
     }
 }

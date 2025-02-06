@@ -1,130 +1,102 @@
-﻿@model IEnumerable<ECOMSYSTEM.Shared.Models.OrderDetails>
+﻿@model IEnumerable<ECOMSYSTEM.Shared.Models.QuotationDetails>
 @{
     Layout = "_SupplierLayout";
 }
 
 <!DOCTYPE html>
-<html lang="en" dir="">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Dashboard </title>
+    <title>Supplier Dashboard</title>
     <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet" />
     <link href="../../dist-assets/css/themes/lite-purple.min.css" rel="stylesheet" />
     <link href="../../dist-assets/css/plugins/perfect-scrollbar.min.css" rel="stylesheet" />
-
-    <!-- Sweet alert -->
-    <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-    <script src="~/js/OrderDoc.js"></script>
 </head>
 
 <body class="text-left">
-
-            <div class="main-content">
-                <div class="breadcrumb">
-                    @*<h1 class="mr-2">Version 1</h1>*@
-                    <ul>
-                        <li><a href="">Dashboard</a></li>
-                        <li>Supplier</li>
-                        <li>All Orders</li>
-                    </ul>
+    <div class="main-content">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href="">Dashboard</a></li>
+                <li>Supplier</li>
+                <li>Orders for Quotations</li>
+            </ul>
+        </div>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Quotation ID</th>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Item Description</th>
+                                <th scope="col">Mobile</th>
+                                <th scope="col">Created Date</th>
+                                <th scope="col">Quotation Amount</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.QuotationId)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ItemName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ItemDescription)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.MobileNo)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                                    <td>
+                                        <input type="number" class="form-control" id="quotationAmount_@item.QuotationId" placeholder="Enter your quote" />
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary" type="button" onclick="submitQuotation(@item.QuotationId)">Submit</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-lg-12">
-                    <div class="row">
-                        <!-- ICON BG-->
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Id</th>
-                                        <th scope="col">Oder Value</th>
-                                        <th scope="col">Order Status</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Mobile</th>
-                                        <th scope="col">Item Description</th>
-                                        <th scope="col">Is Active</th>
-                                        <th scope="col">CreatedDate</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-                                            <th scope="row">
-                                                @Html.DisplayFor(modelItem => item.OrderId)
-                                            </th>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.OderValue)
-                                            </td>
-                                            <td>
-                                                @*@if (item.ProductCategoryId == 1)
-                                            {
-                                            <span>Laptop</span>
-                                            }
-                                            else if (item.ProductCategoryId == 2)
-                                            {
-                                            <span>Desktop PC</span>
-                                            }
-                                            else
-                                            {
-                                            <span>Gaming PC</span>
-                                            }
-                                            *@ @Html.DisplayFor(modelItem => item.OrderStatus)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ItemName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Mobile)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ItemDescription)
-                                            </td>    
-                                            <td>
-                                                @if (item.IsActive == true)
-                                                {
-                                                    <span class="badge badge-success">Active</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge badge-warning">Not Active</span>
-                                                }
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedDate)
-                                            </td>
-                                            <td>
-                                                @if(item.IsOrderAccept == true){
-                                                    <button id="getorderbtn" class="btn btn-danger" onclick="GetOrderBtn_Click(@item.OrderId, @item.UserId);" type="button" disabled><i class="nav-icon i-Pen-2"></i> Order Accepted</button>
-                                                }else
-                                                {
-                                                    <button id="getorderbtn" class="btn btn-success" onclick="GetOrderBtn_Click(@item.OrderId, @item.UserId);" type="button"><i></i>Get Order</button>
-                                                }
-                                               
-                                            </td>
-                                        </tr>
-                                    }
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- end of main-content -->
             </div>
         </div>
-    </div><!-- ============ Search UI Start ============= -->
+    </div>
+
+    <script>
+        // JavaScript function to handle submission of the supplier's quotation
+        function submitQuotation(quotationId) {
+            const amount = document.getElementById(`quotationAmount_${quotationId}`).value;
+
+            if (amount) {
+                // Make an AJAX call to the server to submit the quotation amount
+                $.ajax({
+                    url: '/Supplier/SaveQuotationAmount', // Correct URL to the controller and action
+                    method: 'POST',
+                    data: {
+                        QuotationId: quotationId,
+                        QuotationAmount: amount
+                    },
+                    success: function (response) {
+                        // Assuming the response has a message property
+                        Swal.fire('Success', response.message, 'success');
+                    },
+                    error: function (error) {
+                        Swal.fire('Error', 'Failed to submit quotation amount.', 'error');
+                    }
+                });
+            } else {
+                Swal.fire('Error', 'Please enter a valid quotation amount.', 'error');
+            }
+        }
+    </script>
 
 </body>
 
 </html>
+
+

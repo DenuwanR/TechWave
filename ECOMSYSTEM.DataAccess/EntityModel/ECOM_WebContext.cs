@@ -20,6 +20,7 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
         public virtual DbSet<TblProduct> TblProducts { get; set; } = null!;
         public virtual DbSet<TblUserRegistration> TblUserRegistrations { get; set; } = null!;
         public virtual DbSet<TblQuotation> TblQuotations { get; set; } = null!;
+        public virtual DbSet<TblSupplierQuote> TblSupplierQuotes { get; set; } = null!;  // New DbSet for TblSupplierQuote
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -133,22 +134,47 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
 
                 entity.ToTable("TblQuotation");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                //entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                //entity.Property(e => e.QuotationStatus)
+                //    .HasMaxLength(50)
+                //    .IsUnicode(false);
+
+                entity.HasOne(d => d.ItemCart)
+                    .WithMany(p => p.TblQuotations)
+                    .HasForeignKey(d => d.ItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TblQuota__ItemId__5CD6CB2B");
+
+                //Ensure this relationship uses the correct foreign key
+                entity.HasOne(d => d.User)
+                   .WithMany(p => p.TblQuotations)
+                   .HasForeignKey(d => d.UserId)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK_TblQuotation_TblItemCart_UserId");
+            });
+
+            // Add configuration for TblSupplierQuote
+            modelBuilder.Entity<TblSupplierQuote>(entity =>
+            {
+                entity.HasKey(e => e.SupplierQuoteId)
+                    .HasName("PK__TblSuppo__2A5B08B07946F69D");
+
+                entity.ToTable("TblSupplierQuote");
+
+                entity.Property(e => e.QuotationAmount).HasColumnType("float");
                 entity.Property(e => e.QuotationStatus)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Item)
-                    .WithMany(p => p.TblQuotation)
-                    .HasForeignKey(d => d.ItemId)
+                // Add foreign key relationships with TblQuotation and TblItemCart
+                entity.HasOne(d => d.Quotation)
+                    .WithMany(p => p.TblSupplierQuotes)
+                    .HasForeignKey(d => d.QuotationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TblQuota__ItemId__5CD6CB2B"); // Updated foreign key name
+                    .HasConstraintName("FK_TblSupplierQuote_TblQuotation_QuotationId");
 
-                entity.HasOne(d => d.Supplier)
-                    .WithMany(p => p.TblQuotationsAsSupplier)
-                    .HasForeignKey(d => d.SupplierId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TblQuota__Suppli__4AB81AF0");
+             
             });
 
             OnModelCreatingPartial(modelBuilder);
