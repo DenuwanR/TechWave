@@ -8,6 +8,7 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
         public TblItemCart()
         {
             TblOrders = new HashSet<TblOrder>();
+            TblQuotations = new HashSet<TblQuotation>();
         }
 
         public long ItemId { get; set; }
@@ -24,7 +25,6 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
         public virtual TblProduct Product { get; set; } = null!;
         public virtual TblUserRegistration User { get; set; } = null!;
         public virtual ICollection<TblOrder> TblOrders { get; set; }
-        public virtual ICollection<TblQuotation> TblQuotation { get; set; }
-
+        public virtual ICollection<TblQuotation> TblQuotations { get; set; }
     }
 }

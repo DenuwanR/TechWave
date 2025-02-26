@@ -41,7 +41,7 @@
             <form asp-action="AddProduct" asp-controller="Admin" enctype="multipart/form-data">
                 <input name="ProductId" type="hidden" class="form-control" id="ProductId">
                 <div class="form-group">
-                    <label for="username">Product name</label>
+                    <label for="username">Product Name</label>
                     <input class="form-control form-control-rounded" value="@if(@Model != null)
                     @Model.ProductName" id="Productname" name="ProductName" type="text" required>
                 </div>
@@ -86,7 +86,7 @@
                     <input asp-for="ImageFile" id="Img" name="ImageFile" accept="image/*">
                 </div>
 
-                <button class="btn btn-primary btn-block btn-rounded mt-2 col-lg-4 float-right" onclick="AddProductBtn_Click();">Add</button>
+                <button class="btn btn-primary btn-block btn-rounded mt-2 col-lg-3 float-right" onclick="AddProductBtn_Click();">Add Product</button>
             </form>
 
         </div>

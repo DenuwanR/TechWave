@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using ECOMSYSTEM.DataAccess.EntityModel;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ECOMSYSTEM.DataAccess.EntityModel
 {
@@ -18,14 +19,15 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
         public virtual DbSet<TblItemCart> TblItemCarts { get; set; } = null!;
         public virtual DbSet<TblOrder> TblOrders { get; set; } = null!;
         public virtual DbSet<TblProduct> TblProducts { get; set; } = null!;
-        public virtual DbSet<TblUserRegistration> TblUserRegistrations { get; set; } = null!;
         public virtual DbSet<TblQuotation> TblQuotations { get; set; } = null!;
+        public virtual DbSet<TblUserRegistration> TblUserRegistrations { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=LAPTOP-F81GNF66;Initial Catalog=ECOSYSTEMn;User ID=ecom;Password=1111;Encrypt=True;TrustServerCertificate=True;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-VFCVBRF\\SQLEXPRESS;Initial Catalog=ECOM_Web;User ID=sa;Password=pamoda");
             }
         }
 
@@ -34,73 +36,111 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
             modelBuilder.Entity<TblItemCart>(entity =>
             {
                 entity.HasKey(e => e.ItemId)
-                    .HasName("PK__tmp_ms_x__727E838B36C57308");
+                    .HasName("PK__TblItemC__727E838B2B1B1A80");
 
                 entity.ToTable("TblItemCart");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.ItemDescription).HasMaxLength(300);
+
                 entity.Property(e => e.ItemName).HasMaxLength(50);
+
                 entity.Property(e => e.ItemQty).HasColumnName("ItemQTY");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.TblItemCarts)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TblItemCa__Produ__5CD6CB2B");
+                    .HasConstraintName("FK__TblItemCa__Produ__3D5E1FD2");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.TblItemCarts)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TblItemCa__UserI__4AB81AF0");
+                    .HasConstraintName("FK__TblItemCa__UserI__3E52440B");
             });
 
             modelBuilder.Entity<TblOrder>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__TblOrder__C3905BCF4ABEA67D");
+                    .HasName("PK__TblOrder__C3905BCFB2BD556E");
 
                 entity.ToTable("TblOrder");
 
                 entity.Property(e => e.Address).HasMaxLength(100);
+
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Email).HasMaxLength(50);
+
                 entity.Property(e => e.Mobile).HasMaxLength(50);
+
                 entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Name).HasMaxLength(50);
+
                 entity.Property(e => e.OrderStatus).HasMaxLength(50);
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.TblOrders)
                     .HasForeignKey(d => d.ItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TblOrder__ItemId__4D94879B");
+                    .HasConstraintName("FK__TblOrder__ItemId__3F466844");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.TblOrders)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TblOrder__UserId__4E88ABD4");
+                    .HasConstraintName("FK__TblOrder__UserId__403A8C7D");
             });
 
             modelBuilder.Entity<TblProduct>(entity =>
             {
                 entity.HasKey(e => e.ProductId)
-                    .HasName("PK__tmp_ms_x__B40CC6CD8808E9F9");
+                    .HasName("PK__TblProdu__B40CC6CD86C7D51F");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Description).HasMaxLength(350);
+
                 entity.Property(e => e.ImageName).HasMaxLength(50);
+
                 entity.Property(e => e.ProductName)
                     .HasMaxLength(100)
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<TblQuotation>(entity =>
+            {
+                entity.HasKey(e => e.QuotationId)
+                    .HasName("PK__TblQuota__E19752939F21CC1F");
+
+                entity.ToTable("TblQuotation");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Item)
+                    .WithMany(p => p.TblQuotations)
+                    .HasForeignKey(d => d.ItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TblQuotat__ItemI__4BAC3F29");
+
+                entity.HasOne(d => d.Supplier)
+                    .WithMany(p => p.TblQuotationSuppliers)
+                    .HasForeignKey(d => d.SupplierId)
+                    .HasConstraintName("FK__TblQuotat__Suppl__4AB81AF0");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.TblQuotationUsers)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__TblQuotat__UserI__49C3F6B7");
+            });
+
             modelBuilder.Entity<TblUserRegistration>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__TblUserR__1788CC4CA80DDAD3");
+                    .HasName("PK__TblUserR__1788CC4CA1EA5220");
 
                 entity.ToTable("TblUserRegistration");
 
@@ -109,6 +149,7 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
                     .IsUnicode(false);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Email)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -124,31 +165,6 @@ namespace ECOMSYSTEM.DataAccess.EntityModel
                 entity.Property(e => e.Username)
                     .HasMaxLength(50)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<TblQuotation>(entity =>
-            {
-                entity.HasKey(e => e.QuotationId)
-                    .HasName("PK__TblQuota__2B1397A1D476A42B");
-
-                entity.ToTable("TblQuotation");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-                entity.Property(e => e.QuotationStatus)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Item)
-                    .WithMany(p => p.TblQuotation)
-                    .HasForeignKey(d => d.ItemId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TblQuota__ItemId__5CD6CB2B"); // Updated foreign key name
-
-                entity.HasOne(d => d.Supplier)
-                    .WithMany(p => p.TblQuotationsAsSupplier)
-                    .HasForeignKey(d => d.SupplierId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TblQuota__Suppli__4AB81AF0");
             });
 
             OnModelCreatingPartial(modelBuilder);
