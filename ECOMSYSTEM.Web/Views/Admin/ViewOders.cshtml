@@ -4,94 +4,70 @@
 }
 
 <!DOCTYPE html>
-<html lang="en" dir="">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Dashboard </title>
+    <title>Dashboard</title>
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet" />
+
+    <!-- CSS Files -->
     <link href="../../dist-assets/css/themes/lite-purple.min.css" rel="stylesheet" />
     <link href="../../dist-assets/css/plugins/perfect-scrollbar.min.css" rel="stylesheet" />
 
+    <!-- JavaScript Files -->
     <script src="~/js/addProductDoc.js"></script>
-    <!-- Sweet alert -->
     <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
     <script src="~/js/LoginDoc.js"></script>
 </head>
 
 <body class="text-left">
-
     <div class="main-content">
         <div class="breadcrumb">
-            @*<h1 class="mr-2">Version 1</h1>*@
             <ul>
-                <li><a href="">View Order List</a></li>
+                <li><a href="#">View Order List</a></li>
                 <li>Admin</li>
             </ul>
         </div>
+
         <div class="col-lg-12">
             <div class="row">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Oder Value</th>
-                                <th scope="col">Order Status</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Mobile</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Is Active</th>
-                                <th scope="col">CreatedDate</th>
+                                <th>Id</th>
+                                <th>Order Value</th>
+                                <th>Order Status</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Address</th>
+                                <th>Is Active</th>
+                                <th>Created Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <th scope="row">
-                                        @Html.DisplayFor(modelItem => item.OrderId)
-                                    </th>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OderValue)
-                                    </td>
-                                    <td>
-                                        @*@if (item.ProductCategoryId == 1)
-                                    {
-                                    <span>Laptop</span>
-                                    }
-                                    else if (item.ProductCategoryId == 2)
-                                    {
-                                    <span>Desktop PC</span>
-                                    }
-                                    else
-                                    {
-                                    <span>Gaming PC</span>
-                                    }
-                                    *@ @Html.DisplayFor(modelItem => item.OrderStatus)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Email)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Mobile)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Address)
-                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.OderValue)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.OrderStatus)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Mobile)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
                                     <td>
                                         @if (item.IsActive == true)
+
                                         {
                                             <span class="badge badge-success">Active</span>
                                         }
@@ -99,55 +75,55 @@
                                         {
                                             <span class="badge badge-warning">Not Active</span>
                                         }
-
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedDate)
-                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
                                 </tr>
                             }
-
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <!-- end of main-content -->
     </div>
-    <!--  Modal -->
+
+    <!-- Modal for Editing Product -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle-2" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle-2">Edit Product</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form asp-action="AddProduct" asp-controller="Admin" enctype="multipart/form-data">
-                        <input name="ProductId" type="hidden" class="form-control" id="ProductId">
+                        <input name="ProductId" type="hidden" id="ProductId" class="form-control">
+
                         <div class="form-group">
-                            <label for="username">Product name</label>
+                            <label for="Productname">Product Name</label>
                             <input class="form-control form-control-rounded" id="Productname" name="ProductName" type="text" required>
                         </div>
+
                         <div class="form-group">
                             <label for="Category">Product Category</label>
                             <select class="form-control form-control-rounded" name="ProductCategoryId" id="Category">
-                                <option value=1>Laptop</option>
-                                <option value=2>Desktop PC</option>
-                                <option value=3>Gaming PC</option>
+                                <option value="1">Laptop</option>
+                                <option value="2">Desktop PC</option>
+                                <option value="3">Gaming PC</option>
                             </select>
                         </div>
+
                         <div class="form-group">
-                            <label for="password">Description</label>
-                            <textarea class="form-control form-control-rounded" rows="7" id="Description" name="Description" type="text" required> </textarea>
+                            <label for="Description">Description</label>
+                            <textarea class="form-control form-control-rounded" rows="7" id="Description" name="Description" required></textarea>
                         </div>
+
                         <div class="form-group">
-                            <label for="MobileNo">Price</label>
+                            <label for="Price">Price</label>
                             <input class="form-control form-control-rounded" id="Price" name="Price" type="text" required>
                         </div>
-
                     </form>
-
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
@@ -156,7 +132,6 @@
             </div>
         </div>
     </div>
-
 </body>
 
 </html>
