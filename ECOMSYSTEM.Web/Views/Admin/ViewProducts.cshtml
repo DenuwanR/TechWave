@@ -17,82 +17,79 @@
 </head>
 
 <body class="text-left">
-   
-            <div class="main-content">
-                <div class="breadcrumb">
-                    @*<h1 class="mr-2">Version 1</h1>*@
-                    <ul>
-                        <li><a href="">View User List</a></li>
-                        <li>Admin</li>
-                    </ul>
+    
+    <div class="main-content">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href="">View User List</a></li>
+                <li>Admin</li>
+            </ul>
+        </div>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Product Category</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">IsActive</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Created Date</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <th scope="row">
+                                        @Html.DisplayFor(modelItem => item.ProductId)
+                                    </th>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProductName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProductCategoryId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @if (item.IsActive == true)
+                                        {
+                                            <span class="badge badge-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-warning">Not Active</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                                    </td>
+                                    <td>
+                                        <img src="@item.ImageFile" alt="Product Image" style="width: 50px; height: 50px; object-fit: cover;" />
+                                    </td>
+                                    <td>
+                                        <a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a>
+                                        <a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Product Name</th>
-                                        <th scope="col">ProductCategory</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">IsActive</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">CreatedDate</th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-                                            <th scope="row">
-                                                @Html.DisplayFor(modelItem => item.ProductId)
-                                            </th>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ProductName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ProductCategoryId)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Description)
-                                            </td>
-                                            <td>
-                                                @if (item.IsActive == true)
-                                                {
-                                                    <span class="badge badge-success">Active</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge badge-warning">Not Active</span>
-                                                }
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Price)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ImageFile)
-                                            </td>
-                                            <td>
-                                                <a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a><a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a>
-                                            </td>
-                                        </tr>
-                                    }
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!-- end of main-content -->
             </div>
-
+        </div>
+        <!-- end of main-content -->
+    </div>
 </body>
 
 </html>
