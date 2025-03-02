@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Category">Product Sub Category</label>
+                    <label for="Category">Product Subcription Category</label>
                     <select class="form-control form-control-rounded" value="@if(@Model != null)
                     @Model.ProductCategoryId
 " name="ProductSubCategoryId" id="SubCategory">
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Description</label>
+                    <label for="password">Descriptions</label>
                     <textarea class="form-control form-control-rounded" value=" @if(@Model != null)
                     @Model.Description
 " rows="7" id="Description" name="Description" type="text" required> </textarea>
@@ -87,7 +87,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="ImageFile"></label>
+                    <label asp-for="Image File"></label>
                     <input asp-for="ImageFile" id="Img" name="ImageFile" accept="image/*">
                 </div>
 
